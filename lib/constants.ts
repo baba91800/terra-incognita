@@ -43,16 +43,16 @@ export const DEFAULT_MONUMENTS = [
 ]
 
 export const DEFAULT_BADGES = [
-  { id: 'b1', name: 'First Steps', description: 'Discover your first tile', icon: '👣', earned: false },
-  { id: 'b2', name: 'Explorer', description: 'Discover 100 tiles', icon: '🗺️', earned: false },
-  { id: 'b3', name: 'Urban Explorer', description: 'Discover 500 tiles', icon: '🏙️', earned: false },
+  { id: 'b1', name: 'First Steps', description: 'Discover 10 tiles', icon: '👣', earned: false },
+  { id: 'b2', name: 'Explorer', description: 'Discover 500 tiles', icon: '🗺️', earned: false },
+  { id: 'b3', name: 'Urban Explorer', description: 'Discover 2000 tiles', icon: '🏙️', earned: false },
   { id: 'b4', name: 'Monument Hunter', description: 'Discover your first monument', icon: '🏛️', earned: false },
   { id: 'b5', name: 'Castle Seeker', description: 'Discover 5 monuments', icon: '🏰', earned: false },
   { id: 'b6', name: 'Capital Explorer', description: 'Discover 10 monuments', icon: '🌆', earned: false },
   { id: 'b7', name: 'Legendary Discoverer', description: 'Discover a Legendary monument', icon: '⭐', earned: false },
-  { id: 'b8', name: 'Century', description: 'Reach 1000 points', icon: '💯', earned: false },
+  { id: 'b8', name: 'Century', description: 'Reach 5000 points', icon: '💯', earned: false },
   { id: 'b9', name: 'Epic Hunter', description: 'Discover an Epic monument', icon: '💎', earned: false },
-  { id: 'b10', name: 'Night Wanderer', description: 'Discover 50 tiles', icon: '🌙', earned: false },
+  { id: 'b10', name: 'Night Wanderer', description: 'Discover 200 tiles', icon: '🌙', earned: false },
 ]
 
 export const DEFAULT_LAT = 48.8566
