@@ -31,11 +31,11 @@ export default function FogCanvas({ mapRef, discoveredTiles, playerLat, playerLn
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    // Fill fog
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.92)'
+    // Fill fog — dense black on unrevealed areas
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.96)'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // For each discovered tile, punch a hole in the fog
+    // Punch clean holes for each discovered tile
     ctx.globalCompositeOperation = 'destination-out'
 
     const bounds = map.getBounds()
@@ -46,12 +46,10 @@ export default function FogCanvas({ mapRef, discoveredTiles, playerLat, playerLn
       const tx = parseInt(txStr, 10)
       const ty = parseInt(tyStr, 10)
 
-      // Convert tile to lat/lng
       const METERS_PER_LNG_AT_LAT = METERS_PER_LAT * Math.cos((playerLat * Math.PI) / 180)
       const tileLat = (ty + 0.5) * TILE_SIZE_METERS / METERS_PER_LAT
       const tileLng = (tx + 0.5) * TILE_SIZE_METERS / METERS_PER_LNG_AT_LAT
 
-      // Quick bounds check
       if (
         tileLat < bounds.getSouth() - 0.005 ||
         tileLat > bounds.getNorth() + 0.005 ||
@@ -61,38 +59,26 @@ export default function FogCanvas({ mapRef, discoveredTiles, playerLat, playerLn
 
       try {
         const point = map.latLngToContainerPoint([tileLat, tileLng])
-
-        // Calculate pixel size of tile at current zoom
         const metersPerPixel = (156543.03392 * Math.cos((tileLat * Math.PI) / 180)) / Math.pow(2, zoom)
         const tilePixels = TILE_SIZE_METERS / metersPerPixel
 
-        // Draw revealed circle with soft edges
+        // Full opaque center, soft fade only at the very edge
         const gradient = ctx.createRadialGradient(
           point.x, point.y, 0,
-          point.x, point.y, tilePixels * 1.2
+          point.x, point.y, tilePixels * 1.4
         )
-        gradient.addColorStop(0, 'rgba(0,0,0,1)')
-        gradient.addColorStop(0.7, 'rgba(0,0,0,0.9)')
-        gradient.addColorStop(1, 'rgba(0,0,0,0)')
+        gradient.addColorStop(0,   'rgba(0,0,0,1)')
+        gradient.addColorStop(0.85, 'rgba(0,0,0,1)')
+        gradient.addColorStop(1,   'rgba(0,0,0,0)')
 
         ctx.fillStyle = gradient
         ctx.beginPath()
-        ctx.arc(point.x, point.y, tilePixels * 1.2, 0, Math.PI * 2)
+        ctx.arc(point.x, point.y, tilePixels * 1.4, 0, Math.PI * 2)
         ctx.fill()
       } catch {}
     })
 
     ctx.globalCompositeOperation = 'source-over'
-
-    // Add subtle edge vignette on revealed areas
-    const vigGrad = ctx.createRadialGradient(
-      canvas.width / 2, canvas.height / 2, canvas.height * 0.3,
-      canvas.width / 2, canvas.height / 2, canvas.height * 0.8
-    )
-    vigGrad.addColorStop(0, 'rgba(0,0,0,0)')
-    vigGrad.addColorStop(1, 'rgba(0,0,0,0.3)')
-    ctx.fillStyle = vigGrad
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   }, [discoveredTiles, playerLat, mapRef])
 
