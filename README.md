@@ -82,7 +82,7 @@ npm install -g vercel
 vercel login
 vercel
 # Suivre les instructions
-```
+```0
 
 ### Option B — GitHub + Vercel
 
